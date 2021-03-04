@@ -7,7 +7,7 @@ Activate by selecting text and double-tapping control. A class will be added to 
 
 Include in a page by copying the following text into the JavaScript console:
    var script = document.createElement('script');
-   script.src = '//saurya.github.io/minima/textok/hide_text.css';
+   script.src = '//github.com/saurya/minima/blob/main/textok/hide_text.js';
    script.type = 'text/javascript';
    document.getElementsByTagName('head')[0].appendChild(script);
 
