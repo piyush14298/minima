@@ -10,9 +10,18 @@ document.getElementsByTagName('head')[0].appendChild(selectionScript);
 
 var stylesheet = document.createElement('link');
 stylesheet.rel = "stylesheet"
-stylesheet.href= '//github.com/saurya/minima/blob/main/textok/css/hide_text.css';
+stylesheet.href= '//saurya.github.io/minima/textok/css/hide_text.css';
 document.getElementsByTagName('head')[0].appendChild(stylesheet);
 
+// TODO : Kind of a hacky way of doing it. I'm going to use require.js in the future.
+function defer(method) {
+    if (window.jQuery) {
+        method();
+    } else {
+        setTimeout(function() { defer(method) }, 50);
+    }
+}
+init_ctrl_listener = function() {
 $(document).keydown(function(event) {
     console.log(event);
     if (!event.ctrlKey){ return true; }
@@ -25,7 +34,7 @@ $(document).keydown(function(event) {
     }
     event.preventDefault();
 });
-
+}
 
 animate = function(htmlSelection) {
   $.selection('insert', {text: '<span class="animate_crazy">', mode: 'before'});
