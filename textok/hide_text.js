@@ -38,9 +38,12 @@ $(document).keydown(function(event) {
 
 defer(init_ctrl_listener);
 
-animate = function(htmlSelection) {
-  $.selection('insert', {text: '<span class="animate_crazy">', mode: 'before'});
-  $.selection('insert', {text: '</span>', mode: 'after'});
+animate = function() {
+  var selection = window.getSelection();
+  console.assert(selection.focusNode == selection.anchorNode);
+  var $selectionNode = $(selection.baseNode);
+  var selectionText = $.selection('text');
+  $selectionNode.html($selectionNode.text().replace(selectionText, '<span class="animate_crazy">' + selectionText + '</span>'));
 };
 
 // Insert CSS for animate_crazy
