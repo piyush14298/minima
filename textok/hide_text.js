@@ -43,6 +43,8 @@ animate = function() {
   console.assert(selection.focusNode == selection.anchorNode);
   var $selectionNode = $(selection.baseNode);
   var selectionText = $.selection('text');
+
+  // TODO: This looks like it will fail if there's no node above it. This might happen only in malformed HTML.
   $selectionNode.html($selectionNode.text().replace(selectionText, '<span class="animate_crazy">' + selectionText + '</span>'));
 };
 
