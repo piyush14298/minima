@@ -1,0 +1,9 @@
+.animate_crazy {
+  visibility: hidden;
+  transition: visibility 1.5s easein;
+}
+
+.animate_crazy:hover {
+  visibility: visible;
+}
+
