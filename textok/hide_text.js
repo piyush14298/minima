@@ -34,7 +34,9 @@ $(document).keydown(function(event) {
     }
     event.preventDefault();
 });
-}
+};
+
+defer(init_ctrl_listener);
 
 animate = function(htmlSelection) {
   $.selection('insert', {text: '<span class="animate_crazy">', mode: 'before'});
