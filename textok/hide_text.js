@@ -10,7 +10,7 @@ document.getElementsByTagName('head')[0].appendChild(selectionScript);
 
 var stylesheet = document.createElement('link');
 stylesheet.rel = "stylesheet"
-stylesheet.href= '//saurya.github.io/minima/textok/css/hide_text.css';
+stylesheet.href= '//github.com/saurya/minima/blob/main/textok/css/hide_text.css';
 document.getElementsByTagName('head')[0].appendChild(stylesheet);
 
 $(document).keydown(function(event) {
