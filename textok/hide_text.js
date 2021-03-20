@@ -3,11 +3,6 @@ script.src = '//code.jquery.com/jquery-latest.js';
 script.type = 'text/javascript';
 document.getElementsByTagName('head')[0].appendChild(script);
 
-var selectionScript = document.createElement('script');
-selectionScript.src = '//madapaja.github.io/jquery.selection/src/jquery.selection.js'
-selectionScript.type = 'text/javascript';
-document.getElementsByTagName('head')[0].appendChild(selectionScript);
-
 var stylesheet = document.createElement('link');
 stylesheet.rel = "stylesheet"
 stylesheet.href= '//saurya.github.io/minima/textok/css/hide_text.css';
@@ -22,6 +17,12 @@ function defer(method) {
     }
 }
 init_ctrl_listener = function() {
+    var selectionScript = document.createElement('script');
+        selectionScript.src = '//madapaja.github.io/jquery.selection/src/jquery.selection.js'
+        selectionScript.type = 'text/javascript';
+        document.getElementsByTagName('head')[0].appendChild(selectionScript);
+
+
 $(document).keydown(function(event) {
     console.log(event);
     if (!event.ctrlKey){ return true; }
