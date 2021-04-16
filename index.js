@@ -16,6 +16,12 @@ let ctrlPressedListener = (event) => {
 };
 document.addEventListener('keydown', ctrlPressedListener);
 
+// FIXME: No selection error
+//        when there isn't a selection, the script will add
+//        an empty span.hidden_text to somewhere in the DOM.
+// FIXME: Multiple occurrence
+//        when there are more than one occurence of selected text of the same DOM node,
+//        only the first one will get the intended effect
 let hideText = () => {
   let selection = window.getSelection();
   console.assert(selection.focusNode == selection.anchorNode);
@@ -28,6 +34,7 @@ let hideText = () => {
     );
 }
 
+// Simple replacement of images.
 // let all images be clickable
 let shiftClickListener = (event) => {
   if(!event.shiftKey) { return true; }
