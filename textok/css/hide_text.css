@@ -1,9 +1,0 @@
-.animate_crazy {
-  opacity: 0;
-  transition: opacity 1.5s ease-in-out;
-}
-
-.animate_crazy:hover {
-  opacity: 1;
-}
-
