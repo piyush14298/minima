@@ -1,0 +1,13 @@
+{
+  "name": "minima-bookmarklet",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:mmhan/minima.git",
+  "license": "MIT",
+  "dependencies": {
+    "bookmarklet": "^3.0.0"
+  },
+  "devDependencies": {
+    "http-server": "^0.12.3"
+  }
+}
