@@ -5,8 +5,8 @@
 //        when there are more than one occurence of selected text of the same DOM node,
 //        only the first one will get the intended effect
 
-let initHideText = () => {
-  console.log('initHideText');
+let registerText = () => {
+  console.log('registerText');
   let hideText = () => {
     let selection = window.getSelection();
     console.assert(selection.focusNode == selection.anchorNode);
@@ -21,4 +21,4 @@ let initHideText = () => {
   document.addEventListener('minima.ctrlDoublePressed', hideText);
 }
 
-module.exports = initHideText;
+export default registerText;

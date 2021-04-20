@@ -1,5 +1,4 @@
-import initHideText from './plugins/text';
-import initShiftClick from './plugins/images';
+import registerPlugins from './plugins';
 
 console.log('script loaded');
 
@@ -20,5 +19,4 @@ let ctrlPressedListener = (event) => {
 };
 document.addEventListener('keydown', ctrlPressedListener);
 
-initHideText();
-initShiftClick();
+registerPlugins();
