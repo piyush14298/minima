@@ -1,9 +1,9 @@
 import registerText from './text';
-import registerImage from './images';
+import registerImages from './images';
 
 let registerPlugins = () => {
   registerText();
-  registerImage();
+  registerImages();
 }
 
 export default registerPlugins;

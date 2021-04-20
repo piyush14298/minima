@@ -1,6 +1,6 @@
 // Simple replacement of images.
 // let all images be clickable
-let registerImage = () => {
+let registerImages = () => {
   let shiftClickListener = (event) => {
     if(!event.shiftKey) { return true; }
 
@@ -15,4 +15,4 @@ let registerImage = () => {
   });
 }
 
-export default registerImage;
+export default registerImages;
