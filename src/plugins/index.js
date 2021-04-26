@@ -1,9 +1,13 @@
-import registerText from './text';
-import registerImages from './images';
+import text from './text';
+import image from './images';
+
+let plugins = [];
 
 let registerPlugins = () => {
-  registerText();
-  registerImages();
+  plugins.push(text);
+  plugins.push(image);
+
+  return plugins;
 }
 
 export default registerPlugins;
