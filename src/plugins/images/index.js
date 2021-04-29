@@ -6,10 +6,13 @@ let name = 'Images'
 let shiftClickListener = (event) => {
   if(!event.shiftKey) { return true; }
 
-  event.target.src = "https://picsum.photos/200";
+  let img = event.target;
+  let picsumUrl = `https://picsum.photos/${img.clientWidth}/${img.clientHeight}`;
+
+  img.src = picsumUrl;
   // some img tags come with srcset attribute
-  if(event.target.srcset){
-    event.target.srcset = "https://picsum.photos/200 1x"
+  if(img.srcset){
+    img.srcset = `${picsumUrl} 1x`
   }
 }
 
