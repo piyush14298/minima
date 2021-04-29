@@ -3,6 +3,18 @@
 
 let name = 'Images'
 
+let getImages = () => {
+  let imageIds = ['0', 1, 10, 100, 1000, 1001]
+  let template = imageIds.reduce((product, id) => {
+    product = product + `
+    <a href="#" data-id="${id}" class="minima-images-replacer">
+      <img src="https://picsum.photos/id/${id}/200/200" />
+    </a>`;
+    return product;
+  }, '');
+  return template;
+}
+
 let createChooser = () => {
   let imagesChoiceTemplate = `<div id="minima-images-choice">
     <div class="minima-card">
@@ -10,7 +22,7 @@ let createChooser = () => {
         <h6>Select Image</h6>
       </div>
       <div class="minima-card-body">
-        <a href="#" id="minima-images-replacer">Replace</a>
+        ${getImages()}
       </div>
     </div>
   </div>`;
@@ -36,7 +48,9 @@ let insertChooser = (event) => {
   let replaceImage = (e) => {
     e.preventDefault();
     let img = event.target;
-    let picsumUrl = `https://picsum.photos/${img.clientWidth}/${img.clientHeight}`;
+    let id = e.currentTarget.dataset.id;
+
+    let picsumUrl = `https://picsum.photos/id/${id}/${img.clientWidth}/${img.clientHeight}`;
 
     img.src = picsumUrl;
     // some img tags come with srcset attribute
@@ -46,8 +60,10 @@ let insertChooser = (event) => {
     chooser.remove();
   };
 
-  let replaceBtn = document.getElementById('minima-images-replacer');
-  replaceBtn.addEventListener('click', replaceImage);
+  let replacingImages = document.getElementsByClassName('minima-images-replacer');
+  Array.from(replacingImages).forEach(function(img){
+    img.addEventListener('click', replaceImage);
+  })
 }
 
 let shiftClickListener = (event) => {
