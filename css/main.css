@@ -26,3 +26,7 @@
 #minima-plugins{
   list-style: none;
 }
+
+#minima-images-choice{
+  position:absolute;
+}
