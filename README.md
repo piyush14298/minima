@@ -14,6 +14,7 @@ Include in a page by copying the following text into the JavaScript console:
 # Development
 
 - Edit index.js.
+- Run `yarn run webpack` to compile `src/index.js` to `dist/main.js`
 - Edit configs in `bookmarklet.js` to reflect development configs.
 - Run http-server by running `yarn run http-server`
 - Compile bookmarklet by running `yarn run bookmarklet bookmarklet.js --demo bookmarklet.html`
