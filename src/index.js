@@ -1,6 +1,6 @@
 import registerPlugins from './plugins';
 
-console.log('script loaded');
+//console.log('script loaded');
 
 let ctrlPressed = false;
 let ctrlPressedListener = (event) => {
@@ -66,7 +66,16 @@ let initControls = (plugins) => {
     pluginsContainer.appendChild(node);
     plugin.enable();
   });
+
+  window.value = 1;
 }
 
-addControlsContainer();
-initControls(plugins);
+
+if (window.value != 1) {
+  console.log('script loaded');
+  addControlsContainer();
+  initControls(plugins);
+} else {
+  console.log("Plugins Already Loaded")
+}
+
