@@ -5,6 +5,9 @@ A bunch of tools for futzing with the web so I can shoot videos of new features
 ### Hide Text
 Activate by selecting text and double-tapping control. A class will be added to make the text visible only on hover, slowly.
 
+### Replace Image 
+Activate by holding shift and clicking on the image. A gallery of images will populate the screen and you can select a image that you'd like to replace the original image.
+
 Include in a page by copying the following text into the JavaScript console:
    var script = document.createElement('script');
    script.src = '//github.com/saurya/minima/blob/main/textok/hide_text.js';
