@@ -7,9 +7,14 @@ A bunch of tools for futzing with the web so I can shoot videos of new features
 
 Activate by selecting text and double-tapping control. A class will be added to make the text visible only on hover, slowly.
 
-### Image Replacement
+### Replace Image 
+Activate by holding shift and clicking on the image. A gallery of images will populate the screen and you can select a image that you'd like to replace the original image.
 
-Activate by shift+clicking an image. Choose from the gallery of images that pops-up to replace the clicked image with a new image.
+Include in a page by copying the following text into the JavaScript console:
+   var script = document.createElement('script');
+   script.src = '//github.com/saurya/minima/blob/main/textok/hide_text.js';
+   script.type = 'text/javascript';
+   document.getElementsByTagName('head')[0].appendChild(script);
 
 ## Adding new plugin
 
