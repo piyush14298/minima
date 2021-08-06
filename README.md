@@ -24,15 +24,14 @@ The plugin's `index.js` must export plugin `name` and `enable`/`disable` methods
 ## Development
 
 - Edit index.js.
-- Run `yarn run webpack` to compile `src/index.js` to `dist/main.js`
-- Edit configs in `bookmarklet.js` to reflect development configs.
-- Run http-server by running `yarn run http-server`
+- Run `yarn serve` or `npm run serve` to compile `/main.js` with hot reload support.
 - Compile bookmarklet by running `yarn run bookmarklet bookmarklet.js --demo bookmarklet.html`
-- Open `http://localhost:8080/bookmarklet.html` and drag and drop minima button to the bookmark bar.
+- Open `http://localhost:9090/` and drag and drop minima button to the bookmark bar.
 - Run bookmarklet on any webpage by pressing the bookmark.
 
 ## Going to production
 
+- run `npm run build:prod` or `yarn build:prod`
 - `bookmarklet.html` is compiled using the configurations between the two `==Bookmarklet==` anchors.
 - Since `jsdelivr` caches the scripts, we'll need to use tags to deliver each versions.
 - edit configs in `bookmarklet.js` so that the correct config and correct tag (e.g `@0.0.2`) is between `==Bookmarklet==` anchors

@@ -35,17 +35,17 @@ let createChooser = () => {
 
 let chooser = createChooser();
 
-let positionChooser = (x, y) => {
+let positionChooser = (x: any, y: any) => {
   let div = document.getElementById('minima-images-choice');
   div.style.left = `${x}px`;
   div.style.top = `${y}px`;
 }
 
-let insertChooser = (event) => {
+let insertChooser = (event: any) => {
   document.getElementsByTagName('body')[0].appendChild(chooser);
   positionChooser(event.clientX, event.clientY);
 
-  let replaceImage = (e) => {
+  let replaceImage = (e: any) => {
     e.preventDefault();
     let img = event.target;
     let id = e.currentTarget.dataset.id;
@@ -66,7 +66,7 @@ let insertChooser = (event) => {
   })
 }
 
-let shiftClickListener = (event) => {
+let shiftClickListener = (event: any) => {
   if(!event.shiftKey) { return true; }
 
   insertChooser(event);
