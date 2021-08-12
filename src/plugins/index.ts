@@ -1,7 +1,7 @@
-import text from './text';
-import image from './images';
+import text from './text/index';
+import image from './images/index';
 
-let plugins = [];
+let plugins: any = [];
 
 let registerPlugins = () => {
   plugins.push(text);
@@ -9,5 +9,4 @@ let registerPlugins = () => {
 
   return plugins;
 }
-
 export default registerPlugins;

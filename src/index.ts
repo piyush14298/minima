@@ -1,9 +1,9 @@
-import registerPlugins from './plugins';
+import registerPlugins from './plugins/index';
 
 //console.log('script loaded');
 
 let ctrlPressed = false;
-let ctrlPressedListener = (event) => {
+let ctrlPressedListener = (event: any) => {
   if(!event.ctrlKey){ return true; }
 
   if(ctrlPressed){
@@ -40,7 +40,7 @@ let addControlsContainer = () => {
   document.getElementsByTagName('body')[0].appendChild(node);
 }
 
-let pluginToggleUi = (plugin) => {
+let pluginToggleUi = (plugin: any) => {
   let template = `<label>
       <input type="checkbox" checked /> ${plugin.name}
     </label>`;
@@ -49,7 +49,7 @@ let pluginToggleUi = (plugin) => {
   return node;
 }
 
-let togglePlugin = (plugin, on) => {
+let togglePlugin = (plugin: any, on: any) => {
   if(on){
     plugin.enable();
   }else{
@@ -57,21 +57,21 @@ let togglePlugin = (plugin, on) => {
   }
 }
 
-let initControls = (plugins) => {
+let initControls = (plugins: any) => {
   let pluginsContainer = document.getElementById('minima-plugins');
-  plugins.forEach((plugin) => {
+  plugins.forEach((plugin: any) => {
       let node = pluginToggleUi(plugin);
       node.getElementsByTagName('input')[0]
-          .addEventListener('change', (e) => togglePlugin(plugin, e.target.checked) );
+          .addEventListener('change', (e) => togglePlugin(plugin, (e.target as any).checked) );
     pluginsContainer.appendChild(node);
     plugin.enable();
   });
 
-  window.value = 1;
+  (window as any).value = 1;
 }
 
 
-if (window.value != 1) {
+if ((window as any).value != 1) {
   console.log('script loaded');
   addControlsContainer();
   initControls(plugins);
