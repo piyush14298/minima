@@ -41,9 +41,10 @@ let addControlsContainer = () => {
 }
 
 let pluginToggleUi = (plugin: any) => {
-  let template = `<label>
+  let template = `<label class="tooltip">
       <input type="checkbox" checked /> ${plugin.name}
-    </label>`;
+	  <span class="tooltiptext">${plugin.tooltip}</span>
+    </label><br><br>`;
   let node = document.createElement('li');
   node.innerHTML = template;
   return node;
