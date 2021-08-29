@@ -1,0 +1,134 @@
+#minima-button-properties {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 50px 40px;
+	color: white;
+	background: rgba(0, 0, 0, 0.8);
+	border-radius: 10px;
+	box-shadow: 0 0.4px 0.4px rgba(128, 128, 128, 0.109),
+	  0 1px 1px rgba(128, 128, 128, 0.155),
+	  0 2.1px 2.1px rgba(128, 128, 128, 0.195),
+	  0 4.4px 4.4px rgba(128, 128, 128, 0.241),
+	  0 12px 12px rgba(128, 128, 128, 0.35);
+}
+
+.button-container {
+	position: absolute;
+	/* transform: translate(-50%,-50%); */
+	/* top: 10%; */
+	/* left: 50%; */
+	margin-top: 20px;
+	height: 500px;
+	overflow-y: auto;
+}
+
+#button-properties-form {
+	background: rgba(255,255,255,0.3);
+	padding: 10px;
+	height: auto;
+	border-radius: 20px;
+	border-left: 1px solid rgba(255,255,255,0.3);
+	border-top: 1px solid rgba(255,255,255,0.3);
+	backdrop-filter: blur(10px);
+	box-shadow: 20px 20px 40px -6px rgba(0,0,0,0.2);
+	text-align: center;
+	position: relative;
+	transition: all 0.2s ease-in-out;
+}
+
+#button-properties-form p {
+	font-weight: 500;
+	color: #fff;
+	opacity: 0.7;
+	font-size: 1.4rem;
+	margin-top: 0;
+	margin-bottom: 10px;
+	text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+#button-properties-form a {
+	text-decoration: none;
+	color: #ddd;
+	font-size: 12px;
+}
+
+#button-properties-form input {
+	background: transparent;
+	width: 200px;
+	padding: 1em;
+	margin-bottom: 2em;
+	border: none;
+	border-left: 1px solid rgba(255,255,255,0.3);
+	border-top: 1px solid rgba(255,255,255,0.3);
+	border-radius: 5000px;
+	backdrop-filter: blur(5px);
+	box-shadow: 4px 4px 60px rgba(0,0,0,0.2);
+	color: #fff;
+	font-family: Montserrat, sans-serif;
+	font-weight: 500;
+	transition: all 0.2s ease-in-out;
+	text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+#button-properties-form input[type=button] {
+	margin-top: 10px;
+	width: 150px;
+	font-size: 1rem;
+}
+#button-properties-form input[type=button]:hover {
+	cursor: pointer;
+}
+#button-properties-form input[type=button]:active {
+	background: rgba(255, 255, 255, 0.2);
+}
+
+#button-properties-form label {
+	color: #fff;
+	font-family: Montserrat, sans-serif;
+	font-weight: 500;
+	text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.tooltip {
+	position: relative;
+	display: inline-block;
+	border-bottom: 1px dotted rgba(0,0,0,0.4); /* If you want dots under the hoverable text */
+}
+
+.tooltip .tooltiptext {
+	visibility: hidden;
+	width: 120px;
+	background-color: rgba(0,0,0,0.4);
+	color: #fff;
+	text-align: center;
+	padding: 5px 0;
+	border-radius: 6px;
+   
+	/* Position the tooltip text - see examples below! */
+	position: absolute;
+	z-index: 1;
+}
+
+.tooltip .tooltiptext::after {
+	content: " ";
+	position: absolute;
+	top: 20%;
+	right: 100%; /* To the left of the tooltip */
+	margin-top: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: transparent rgba(0,0,0,0.4) transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+	visibility: visible;
+}
+
+.tooltip .tooltiptext {
+	opacity: 0;
+	transition: opacity 1s;
+  }
+  
+  .tooltip:hover .tooltiptext {
+	opacity: 1;
+  }

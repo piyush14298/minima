@@ -2,6 +2,7 @@
 // let all images be clickable
 
 let name = 'Images'
+let tooltip = 'Shift click the images to activate'
 
 let getImages = () => {
   let imageIds = ['0', 1, 10, 100, 1000, 1001]
@@ -86,6 +87,7 @@ let disable = () => {
 
 export default {
   name,
+  tooltip,
   enable,
   disable
 };

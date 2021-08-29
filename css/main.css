@@ -1,3 +1,5 @@
+@import "buttonstudio.css";
+
 .hidden_text{
   opacity: 0;
   transition: opacity 1s ease-in-out;

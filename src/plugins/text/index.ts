@@ -1,5 +1,5 @@
 let name = 'Text';
-
+let tooltip = 'Select the text to activate'
 
 let hideText = () => {
   let selection = window.getSelection();
@@ -28,6 +28,7 @@ let disable = () => {
 
 export default {
   name,
+  tooltip,
   enable,
   disable
 };
