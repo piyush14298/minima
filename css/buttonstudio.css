@@ -37,6 +37,10 @@
 	transition: all 0.2s ease-in-out;
 }
 
+#button-properties-form .reset {
+	all : unset;
+}
+
 #button-properties-form p {
 	font-weight: 500;
 	color: #fff;

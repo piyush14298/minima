@@ -12,6 +12,13 @@ let stylesToCover = [
 	['button-studio-font-size', 'font-size']
 ];
 
+let buttonChoices = [
+	['updateButtonChoice1','/src/plugins/buttons/buttonChoice1.txt'],
+	['updateButtonChoice2','/src/plugins/buttons/buttonChoice2.txt'],
+	['updateButtonChoice3','/src/plugins/buttons/buttonChoice3.txt'],
+	['updateButtonChoice4','/src/plugins/buttons/buttonChoice4.txt']
+];
+
 let createChooser = () => {
     let chooser = document.createElement('div');
     chooser.id = 'minima-images-container';
@@ -56,18 +63,38 @@ let addRealTimeUpdation = (event) => {
 	});
 }
 
+let closeChooser = () => {
+	chooser.remove();
+}
+
+let updateButtonChoices = (event) => {
+	buttonChoices.forEach(buttonChoice => {
+		document.getElementById(buttonChoice[0]).value = event.target.innerHTML;
+		fetch(buttonChoice[1])
+		.then(function (response) {
+		return response.text();
+		})
+		.then(function (css) {
+			document.getElementById(buttonChoice[0]).style.cssText = css;
+		});
+		
+		document.getElementById(buttonChoice[0]).addEventListener('click', ()=>{
+			event.target.style.cssText = document.getElementById(buttonChoice[0]).style.cssText;//document.getElementById(buttonChoice).style.color;
+			closeChooser();
+		});
+	});
+}
+
 let insertChooser = (event) => {
     document.getElementsByTagName('body')[0].appendChild(chooser);
+
+	updateButtonChoices(event);
 
     setDefaults(event);
 
     positionChooser(event.clientX, event.clientY);
 
     addRealTimeUpdation(event);
-    
-    let closeChooser = () => {
-        chooser.remove();
-    }
 
     document.getElementById("updateButtonClose").addEventListener('click',closeChooser);
 }
