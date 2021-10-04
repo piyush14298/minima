@@ -36,13 +36,14 @@ let createChooser = () => {
   
 let chooser = createChooser();
 
-let positionChooser = (x, y) => {
+let positionChooser = (x: any, y: any) => {
     let div = document.getElementsByClassName('button-container')[0];
-    div.style.left = `${x}px`;
-    div.style.top = `${y}px`;
+	div.setAttribute('style', `left:${x}px; top:${y}px`);
+    // div.style.left = `${x}px`;
+    // div.style.top = `${y}px`;
 }
 
-let setDefaults = (event) => {
+let setDefaults = (event: any) => {
     let style = window.getComputedStyle(event.target);
 	stylesToCover.forEach(element => {
 		document.getElementById(element[0]).setAttribute('value', style.getPropertyValue(element[1]))
@@ -50,15 +51,15 @@ let setDefaults = (event) => {
 	document.getElementById('button-studio-text').setAttribute('value', event.target.innerHTML);
 }
 
-let addRealTimeUpdation = (event) => {
+let addRealTimeUpdation = (event: any) => {
 	stylesToCover.forEach(element => {
 		document.getElementById(element[0]).addEventListener("keyup", ()=>{
-			var x = document.getElementById(element[0]);
+			var x = document.getElementById(element[0]) as HTMLInputElement;
 			event.target.style.setProperty(element[1], x.value);
 		});
 	})
 	document.getElementById('button-studio-text').addEventListener("keyup", ()=>{
-		var x = document.getElementById('button-studio-text');
+		var x = document.getElementById('button-studio-text') as HTMLInputElement;
 		event.target.innerHTML = x.value;
 	});
 }
@@ -67,9 +68,9 @@ let closeChooser = () => {
 	chooser.remove();
 }
 
-let updateButtonChoices = (event) => {
+let updateButtonChoices = (event: any) => {
 	buttonChoices.forEach(buttonChoice => {
-		document.getElementById(buttonChoice[0]).value = event.target.innerHTML;
+		document.getElementById(buttonChoice[0]).setAttribute('value', event.target.innerHTML);// = event.target.innerHTML;
 		fetch(buttonChoice[1])
 		.then(function (response) {
 		return response.text();
@@ -85,7 +86,7 @@ let updateButtonChoices = (event) => {
 	});
 }
 
-let insertChooser = (event) => {
+let insertChooser = (event: any) => {
     document.getElementsByTagName('body')[0].appendChild(chooser);
 
 	updateButtonChoices(event);
@@ -99,7 +100,7 @@ let insertChooser = (event) => {
     document.getElementById("updateButtonClose").addEventListener('click',closeChooser);
 }
 
-let shiftClickListener = (event) => {
+let shiftClickListener = (event: MouseEvent) => {
     if(!event.shiftKey) { return true; }
 	// console.log(window.getComputedStyle(event.target));
 
