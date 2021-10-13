@@ -28,11 +28,11 @@
 		<input type="button" class="reset" id="updateButtonChoice3"><br>
 		<input type="button" class="reset" id="updateButtonChoice4"><br>
 		<label for="width">Width:</label>
-		<input type="text" id="button-studio-width" ><br>
+		<input type="range" min="1" max="500" value="10" id="button-studio-width" ><br>
 		<label for="height">Height:</label>
-		<input type="text" id="button-studio-height" ><br>
+		<input type="range" min="1" max="100" value="10" id="button-studio-height" ><br>
 		<label for="color">Color:</label>
-		<input type="text" id="button-studio-color" ><br>
+		<input type="color" value="#000000" id="button-studio-color" ><br>
 		<label for="text">Text:</label>
 		<input type="text" id="button-studio-text" ><br>
 		<label for="background-color">Background Color:</label>
@@ -40,9 +40,11 @@
 		<label for="border">Border:</label>
 		<input type="text" id="button-studio-border" ><br>
 		<label for="border-radius">Border Radius:</label>
-		<input type="text" id="button-studio-border-radius" ><br>
+		<input type="range" min="0" max="50" id="button-studio-border-radius" ><br>
 		<label for="font-size">Font Size:</label>
 		<input type="text" id="button-studio-font-size" ><br>
+		<label for="font-family">Font Family:</label>
+		<input type="text" id="button-studio-font-family" ><br>
 		<input type="button" id="updateButtonClose" value="Close">
 	</form>
 </div>

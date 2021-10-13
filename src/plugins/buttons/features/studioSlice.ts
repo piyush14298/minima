@@ -1,46 +1,32 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
-interface Color {
-	r: number;
-	g: number;
-	b: number;
-	a: number;
+export interface Dimension {
+	width: string;
+	height: string;
 }
 
-interface Dimension {
-	width: number;
-	height: number;
-}
-
-interface ButtonStudioState {
+export interface ButtonStudioState {
 	dimensions: Dimension;
 	buttonText: string;
-	textColor: Color;
-	backgroundColor: Color;
+	textColor: string;
+	backgroundColor: string;
 	fontFamily: string;
-	fontSize: number;
+	fontSize: string;
 }
 
 const initialDimension: Dimension = {
-	width: 0,
-	height: 0
-}
-
-const initialColor: Color = {
-	r: 0,
-	g: 0,
-	b: 0,
-	a: 0
+	width: "0",
+	height: "0"
 }
 
 const initialState: ButtonStudioState = {
 	dimensions: initialDimension,
 	buttonText: "",
-	textColor: initialColor,
-	backgroundColor: initialColor,
+	textColor: "",
+	backgroundColor: "",
 	fontFamily: "",
-	fontSize: 10
+	fontSize: "10"
 }
 
 const buttonStudioSlice = createSlice({
@@ -59,19 +45,13 @@ const buttonStudioSlice = createSlice({
 		},
 
 		updateButtonTextColor (state: ButtonStudioState, 
-				action: PayloadAction<Color>) {
-		state.textColor.r = action.payload.r;
-		state.textColor.g = action.payload.g;
-		state.textColor.b = action.payload.b;
-		state.textColor.a = action.payload.a;
+				action: PayloadAction<string>) {
+		state.textColor = action.payload;
 		},
 
 		updateButtonBackgroundColor (state: ButtonStudioState, 
-						action: PayloadAction<Color>) {
-		state.backgroundColor.r = action.payload.r;
-		state.backgroundColor.g = action.payload.g;
-		state.backgroundColor.b = action.payload.b;
-		state.backgroundColor.a = action.payload.a;
+						action: PayloadAction<string>) {
+		state.backgroundColor = action.payload;
 		},
 
 		updateButtonFontFamily (state: ButtonStudioState, 
@@ -80,7 +60,7 @@ const buttonStudioSlice = createSlice({
 		},
 
 		updateButtonFontSize (state: ButtonStudioState, 
-				action: PayloadAction<number>) {
+				action: PayloadAction<string>) {
 		state.fontSize = action.payload;
 		}
 	}
