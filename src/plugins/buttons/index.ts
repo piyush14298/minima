@@ -1,3 +1,25 @@
+import {
+	updateButtonText,
+	updateButtonDimensions,
+	updateButtonTextColor,
+	updateButtonBackgroundColor,
+	updateButtonFontFamily,
+	updateButtonFontSize,
+	buttonDimensionSelector,
+	buttonTextSelector,
+	buttonTextColorSelector,
+	buttonBackgroundColorSelector,
+	buttonFontFamilySelector,
+	buttonFontSizeSelector
+} from './features/studioSlice';
+
+import store from './store';
+
+import {
+	Dimension,
+	ButtonStudioState
+} from './features/studioSlice';
+
 let name = "Buttons";
 let tooltip = "Shift click the buttons to activate"
 
@@ -9,7 +31,8 @@ let stylesToCover = [
 	['button-studio-background-color','background-color'],
 	['button-studio-border', 'border'],
 	['button-studio-border-radius', 'border-radius'],
-	['button-studio-font-size', 'font-size']
+	['button-studio-font-size', 'font-size'],
+	['button-studio-font-family', 'font-family']
 ];
 
 let buttonChoices = [
@@ -43,24 +66,111 @@ let positionChooser = (x: any, y: any) => {
     // div.style.top = `${y}px`;
 }
 
+let updateButtonCssProperties = (event: any) => {
+	const dimension: Dimension = buttonDimensionSelector(store.getState());
+	event.target.style.width = dimension.width;
+	event.target.style.height = dimension.height;
+
+	event.target.innerHTML = buttonTextSelector(store.getState());
+	event.target.style.color = buttonTextColorSelector(store.getState());
+	event.target.style.backgroundColor = buttonBackgroundColorSelector(store.getState());
+	event.target.style.fontFamily = buttonFontFamilySelector(store.getState());
+	event.target.style.fontSize = buttonFontSizeSelector(store.getState());
+}
+
+const convertColor = (rgb: String) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
+
 let setDefaults = (event: any) => {
     let style = window.getComputedStyle(event.target);
+
+	//updating Dimensions
+	const dimensions: Dimension = {
+		width: style.width,
+		height: style.height
+	}
+	store.dispatch(updateButtonDimensions(dimensions));
+
+	//updating Button text
+	store.dispatch(updateButtonText(event.target.innerHTML));
+
+	//updating Button text color
+	store.dispatch(updateButtonTextColor(style.color));
+
+	//updating background color
+	store.dispatch(updateButtonBackgroundColor(style.backgroundColor));
+
+	//updating font family
+	store.dispatch(updateButtonFontFamily(style.fontFamily));
+
+	//updating font size
+	store.dispatch(updateButtonFontSize(style.fontSize));
+
 	stylesToCover.forEach(element => {
 		document.getElementById(element[0]).setAttribute('value', style.getPropertyValue(element[1]))
 	});
+	document.getElementById('button-studio-color').setAttribute('value', convertColor(style.color));
 	document.getElementById('button-studio-text').setAttribute('value', event.target.innerHTML);
+
+	updateButtonCssProperties(event);
 }
 
 let addRealTimeUpdation = (event: any) => {
-	stylesToCover.forEach(element => {
-		document.getElementById(element[0]).addEventListener("keyup", ()=>{
-			var x = document.getElementById(element[0]) as HTMLInputElement;
-			event.target.style.setProperty(element[1], x.value);
-		});
-	})
-	document.getElementById('button-studio-text').addEventListener("keyup", ()=>{
-		var x = document.getElementById('button-studio-text') as HTMLInputElement;
-		event.target.innerHTML = x.value;
+
+	document.getElementById("button-studio-width").addEventListener("change", ()=> {
+		var x = document.getElementById("button-studio-width") as HTMLInputElement;
+		const width = x.value;
+		var y = document.getElementById("button-studio-height") as HTMLInputElement;
+		const height = y.value;
+		const dimensions: Dimension = {
+			width: width,
+			height: height
+		};
+		store.dispatch(updateButtonDimensions(dimensions));
+		updateButtonCssProperties(event);
+		console.log(store.getState());
+	});
+
+	document.getElementById("button-studio-height").addEventListener("change", ()=> {
+		var x = document.getElementById("button-studio-width") as HTMLInputElement;
+		const width = x.value;
+		var y = document.getElementById("button-studio-height") as HTMLInputElement;
+		const height = y.value;
+		const dimensions: Dimension = {
+			width: width,
+			height: height
+		};
+		store.dispatch(updateButtonDimensions(dimensions));
+		updateButtonCssProperties(event);
+	});
+
+	document.getElementById("button-studio-text").addEventListener("keyup", ()=>{
+		var x = document.getElementById("button-studio-text") as HTMLInputElement;
+		store.dispatch(updateButtonText(x.value));
+		updateButtonCssProperties(event);
+	});
+
+	document.getElementById("button-studio-color").addEventListener("keyup", ()=>{
+		var x = document.getElementById("button-studio-color") as HTMLInputElement;
+		store.dispatch(updateButtonTextColor(x.value));
+		updateButtonCssProperties(event);
+	});
+
+	document.getElementById("button-studio-background-color").addEventListener("keyup", ()=>{
+		var x = document.getElementById("button-studio-background-color") as HTMLInputElement;
+		store.dispatch(updateButtonBackgroundColor(x.value));
+		updateButtonCssProperties(event);
+	});
+
+	document.getElementById("button-studio-font-size").addEventListener("keyup", ()=>{
+		var x = document.getElementById("button-studio-font-size") as HTMLInputElement;
+		store.dispatch(updateButtonFontSize(x.value));
+		updateButtonCssProperties(event);
+	});
+
+	document.getElementById("button-studio-font-family").addEventListener("keyup", ()=>{
+		var x = document.getElementById("button-studio-font-family") as HTMLInputElement;
+		store.dispatch(updateButtonFontFamily(x.value));
+		updateButtonCssProperties(event);
 	});
 }
 
