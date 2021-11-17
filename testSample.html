@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>
+        <title id="titleId">
             Sample HTML page
         </title>
         <link href="sideNav.css" rel="stylesheet">
@@ -9,8 +9,19 @@
     <body>
         <h1>Sample Minima testing page</h1>
         <center>
-            <button id='button'>Sample button</button>
+            <button id='button' class='first-button'>here first</button>
             <br>
+			<button id='button2'>alright</button>
+			<br><br><br>
+			<label for="start-frame">Start Frame:</label>
+			<input type="text" id="start-frame" ><br>
+			<label for="end-frame">End Frame:</label>
+			<input type="text" id="end-frame" ><br>
+			<label for="time-delay">Time delay:</label>
+			<input type="text" id="time-delay" ><br>
+			<label for="file-name">File Name:</label>
+			<input type="text" id="file-name" ><br>
+			<input type="button" id="customScript" value="Run Script">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1024px-Image_created_with_a_mobile_phone.png"/>
         </center>
         <!-- <div id="mySidenav" class="sidenav">

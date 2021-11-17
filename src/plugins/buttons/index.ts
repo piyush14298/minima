@@ -1,38 +1,34 @@
 import {
-	updateButtonText,
-	updateButtonDimensions,
-	updateButtonTextColor,
-	updateButtonBackgroundColor,
-	updateButtonFontFamily,
-	updateButtonFontSize,
-	buttonDimensionSelector,
-	buttonTextSelector,
-	buttonTextColorSelector,
-	buttonBackgroundColorSelector,
-	buttonFontFamilySelector,
-	buttonFontSizeSelector
+	buttonCssSelector,
+	updateButtonCss,
+	stateInfo,
+	ButtonStudioState
 } from './features/studioSlice';
 
 import store from './store';
 
 import {
-	Dimension,
-	ButtonStudioState
-} from './features/studioSlice';
+	stringToMap,
+	mapToString,
+	convertCamelCaseBack,
+	convertColor
+} from './utils';
 
 let name = "Buttons";
 let tooltip = "Shift click the buttons to activate"
+let uniqueVal = 1;
+const defaultState: Map<string, string> = new Map();
 
-// Array of [elementID, elementCssProperty]
+// Array of [elementID, elementCssProperty, valToFindInCssString, eventToBeListened]
 let stylesToCover = [
-	['button-studio-width', 'width'],
-	['button-studio-height', 'height'],
-	['button-studio-color', 'color'],
-	['button-studio-background-color','background-color'],
-	['button-studio-border', 'border'],
-	['button-studio-border-radius', 'border-radius'],
-	['button-studio-font-size', 'font-size'],
-	['button-studio-font-family', 'font-family']
+	['button-studio-width', 'width', ';width:', 'change'],
+	['button-studio-height', 'height', ';height:', 'change'],
+	['button-studio-color', 'color', ';color:', 'change'],
+	['button-studio-background-color','background-color:', ';background-color', 'keyup'],
+	['button-studio-border', 'border', ';border:', 'keyup'],
+	['button-studio-border-radius', 'border-radius', ';border-radius:', 'change'],
+	['button-studio-font-size', 'font-size', ';font-size:', 'keyup'],
+	['button-studio-font-family', 'font-family', ';font-family:', 'keyup']
 ];
 
 let buttonChoices = [
@@ -41,6 +37,66 @@ let buttonChoices = [
 	['updateButtonChoice3','/src/plugins/buttons/buttonChoice3.txt'],
 	['updateButtonChoice4','/src/plugins/buttons/buttonChoice4.txt']
 ];
+
+/**
+ * get computed style for an element, excluding any default styles
+ *
+ * @param {DOM} element
+ * @return {object} difference
+ */
+
+ function getStylesWithoutDefaults( element: HTMLElement ) {
+
+	// creating an empty dummy object to compare with
+	var dummy = document.createElement( 'element-' + ( new Date().getTime() ) );
+	document.body.appendChild( dummy );
+  
+	// getting computed styles for both elements
+	var defaultStyles = getComputedStyle( dummy );
+	var elementStyles = getComputedStyle( element );
+  
+	// calculating the difference
+	var diff = "";
+	for( var key in elementStyles ) {
+	  if(elementStyles.hasOwnProperty(key)
+			&& defaultStyles[ key ] !== elementStyles[ key ] )
+	  {
+		diff+= convertCamelCaseBack(key) + ':' + elementStyles[ key ] + ';';
+	  }
+	}
+  
+	// clear dom
+	dummy.remove();
+  
+	return diff;
+  }
+
+let updateCssString = (event: any, keyToUpdate: string, value: string) => {
+	let currentCss = stringToMap(buttonCssSelector(store.getState())).get(event.target.getAttribute('minima-updated'));
+
+	// If the key is new to the CSS, add it to the CSS, else
+	// update the value
+	if (currentCss.indexOf(keyToUpdate) == -1) {
+		const splitCurrentCss = currentCss.split('');
+		splitCurrentCss.splice(0,0,keyToUpdate+":"+value+';');
+		const newCss = splitCurrentCss.join('');
+		let newState = stringToMap(buttonCssSelector(store.getState()));
+		newState.set(event.target.getAttribute('minima-updated'), newCss);
+		store.dispatch(updateButtonCss(mapToString(newState)));
+	} else {
+		let indexOfKey = currentCss.indexOf(keyToUpdate);
+		while (currentCss[indexOfKey++] != ':');
+		let startIndexOfVal = indexOfKey;
+		let endIndexOfVal = startIndexOfVal;
+		while (currentCss[endIndexOfVal++] != ';');
+		endIndexOfVal-=1;
+		const newCss = currentCss.substr(0,indexOfKey) + value + currentCss.substr(endIndexOfVal);
+		// console.log(newCss);
+		let newState = stringToMap(buttonCssSelector(store.getState()));
+		newState.set(event.target.getAttribute('minima-updated'), newCss);
+		store.dispatch(updateButtonCss(mapToString(newState)));
+	}
+}
 
 let createChooser = () => {
     let chooser = document.createElement('div');
@@ -67,44 +123,16 @@ let positionChooser = (x: any, y: any) => {
 }
 
 let updateButtonCssProperties = (event: any) => {
-	const dimension: Dimension = buttonDimensionSelector(store.getState());
-	event.target.style.width = dimension.width;
-	event.target.style.height = dimension.height;
-
-	event.target.innerHTML = buttonTextSelector(store.getState());
-	event.target.style.color = buttonTextColorSelector(store.getState());
-	event.target.style.backgroundColor = buttonBackgroundColorSelector(store.getState());
-	event.target.style.fontFamily = buttonFontFamilySelector(store.getState());
-	event.target.style.fontSize = buttonFontSizeSelector(store.getState());
+	const presentSate = stringToMap(buttonCssSelector(store.getState()));
+	presentSate.forEach((css, elementId) => {
+		const target = document.querySelector('[minima-updated="'+elementId+'"]');
+		target.setAttribute("style", css);
+	});
+	// event.target.setAttribute("style", stringToMap(buttonCssSelector(store.getState())).get(event.target.id));
 }
 
-const convertColor = (rgb: String) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
-
 let setDefaults = (event: any) => {
-    let style = window.getComputedStyle(event.target);
-
-	//updating Dimensions
-	const dimensions: Dimension = {
-		width: style.width,
-		height: style.height
-	}
-	store.dispatch(updateButtonDimensions(dimensions));
-
-	//updating Button text
-	store.dispatch(updateButtonText(event.target.innerHTML));
-
-	//updating Button text color
-	store.dispatch(updateButtonTextColor(style.color));
-
-	//updating background color
-	store.dispatch(updateButtonBackgroundColor(style.backgroundColor));
-
-	//updating font family
-	store.dispatch(updateButtonFontFamily(style.fontFamily));
-
-	//updating font size
-	store.dispatch(updateButtonFontSize(style.fontSize));
-
+	let style = window.getComputedStyle(event.target);
 	stylesToCover.forEach(element => {
 		document.getElementById(element[0]).setAttribute('value', style.getPropertyValue(element[1]))
 	});
@@ -114,92 +142,166 @@ let setDefaults = (event: any) => {
 	updateButtonCssProperties(event);
 }
 
-let addRealTimeUpdation = (event: any) => {
+function realTimeUpdateHelper(event: any, element: Array<string>) {
+	var x = document.getElementById(element[0]) as HTMLInputElement;
+	var val = x.value;
+	if (element[1] == 'border-radius') {
+		val += 'px';
+	}
+	updateCssString(event, element[2], val);
+	updateButtonCssProperties(event);
+}
 
-	document.getElementById("button-studio-width").addEventListener("change", ()=> {
-		var x = document.getElementById("button-studio-width") as HTMLInputElement;
-		const width = x.value;
-		var y = document.getElementById("button-studio-height") as HTMLInputElement;
-		const height = y.value;
-		const dimensions: Dimension = {
-			width: width,
-			height: height
-		};
-		store.dispatch(updateButtonDimensions(dimensions));
-		updateButtonCssProperties(event);
-		console.log(store.getState());
-	});
+function addRealTimeUpdation(event: any) {
 
-	document.getElementById("button-studio-height").addEventListener("change", ()=> {
-		var x = document.getElementById("button-studio-width") as HTMLInputElement;
-		const width = x.value;
-		var y = document.getElementById("button-studio-height") as HTMLInputElement;
-		const height = y.value;
-		const dimensions: Dimension = {
-			width: width,
-			height: height
-		};
-		store.dispatch(updateButtonDimensions(dimensions));
-		updateButtonCssProperties(event);
-	});
+	stylesToCover.forEach(element => {
+		document.getElementById(element[0]).replaceWith(document.getElementById(element[0]).cloneNode(true));
+	})
 
-	document.getElementById("button-studio-text").addEventListener("keyup", ()=>{
-		var x = document.getElementById("button-studio-text") as HTMLInputElement;
-		store.dispatch(updateButtonText(x.value));
-		updateButtonCssProperties(event);
+	stylesToCover.forEach(element => {
+		document.getElementById(element[0]).addEventListener(element[3], () => {
+			realTimeUpdateHelper(event, element);
+		})
 	});
+}
 
-	document.getElementById("button-studio-color").addEventListener("keyup", ()=>{
-		var x = document.getElementById("button-studio-color") as HTMLInputElement;
-		store.dispatch(updateButtonTextColor(x.value));
-		updateButtonCssProperties(event);
-	});
+function sleep(ms: any) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-	document.getElementById("button-studio-background-color").addEventListener("keyup", ()=>{
-		var x = document.getElementById("button-studio-background-color") as HTMLInputElement;
-		store.dispatch(updateButtonBackgroundColor(x.value));
-		updateButtonCssProperties(event);
-	});
+async function recordScreen() {
+    return await navigator.mediaDevices.getDisplayMedia({
+        audio: false, 
+        video: true,
+    });
+}
 
-	document.getElementById("button-studio-font-size").addEventListener("keyup", ()=>{
-		var x = document.getElementById("button-studio-font-size") as HTMLInputElement;
-		store.dispatch(updateButtonFontSize(x.value));
-		updateButtonCssProperties(event);
-	});
+function createRecorder (stream: MediaStream, mimeType: string) {
+	// the stream data is stored in this array
+	let recordedChunks: Array<BlobEvent["data"]> = []; 
+  
+	const mediaRecorder = new MediaRecorder(stream);
+  
+	mediaRecorder.ondataavailable = function (e) {
+	  if (e.data.size > 0) {
+		recordedChunks.push(e.data);
+	  }  
+	};
+	mediaRecorder.onstop = function () {
+	   saveFile(recordedChunks);
+	   recordedChunks = [];
+	};
+	mediaRecorder.start(200); // For every 200ms the stream data will be stored in a separate chunk.
+	return mediaRecorder;
+}
 
-	document.getElementById("button-studio-font-family").addEventListener("keyup", ()=>{
-		var x = document.getElementById("button-studio-font-family") as HTMLInputElement;
-		store.dispatch(updateButtonFontFamily(x.value));
-		updateButtonCssProperties(event);
+function saveFile(recordedChunks: Array<BlobEvent["data"]>){
+
+	const blob = new Blob(recordedChunks, {
+	   type: 'video/webm'
+	 });
+	 let filename = document.getElementById("file-name") as HTMLInputElement,
+		 downloadLink = document.createElement('a');
+	 downloadLink.href = URL.createObjectURL(blob);
+	 downloadLink.download = `${filename.value}.webm`;
+ 
+	 document.body.appendChild(downloadLink);
+	 downloadLink.click();
+	//  URL.revokeObjectURL(blob); // clear from memory
+	 document.body.removeChild(downloadLink);
+}
+
+async function customScript() {
+	console.log(stateInfo);
+	const startFrame = document.getElementById("start-frame") as HTMLInputElement;
+	const endFrame = document.getElementById("end-frame") as HTMLInputElement;
+	const timeDelay = document.getElementById("time-delay") as HTMLInputElement;
+
+	const firstFrame = Number(startFrame.value);
+	const lastFrame = Number(endFrame.value);
+	const delay = Number(timeDelay.value);
+
+	let stream = await recordScreen();
+    let mimeType = 'video/webm';
+    let mediaRecorder = createRecorder(stream, mimeType);
+
+	const firstState = stringToMap(stateInfo[firstFrame].state);
+
+	defaultState.forEach((css, id) => {
+		if (firstState.has(id)) {
+			var target = document.querySelector('[minima-updated="'+id+'"]');
+			target.setAttribute("style", firstState.get(id));
+		} else {
+			var target = document.querySelector('[minima-updated="'+id+'"]');
+			target.setAttribute("style", css);
+		}
 	});
+	await sleep(delay);
+
+	for(var i=firstFrame+1; i<=lastFrame && i<stateInfo.length; i++) {
+		console.log(i);
+		const presentState = stringToMap(stateInfo[i].state);
+		presentState.forEach((css, elementId) => {
+			var target = document.querySelector('[minima-updated="'+elementId+'"]');
+			target.setAttribute("style", css);
+		});
+		await sleep(delay);
+	}
+	mediaRecorder.stop();
+	const lastState = stringToMap(stateInfo[stateInfo.length-1].state);
+	lastState.forEach((css, elementId) => {
+		var target = document.querySelector('[minima-updated="'+elementId+'"]');
+		target.setAttribute("style", css);
+	})
+	
 }
 
 let closeChooser = () => {
 	chooser.remove();
 }
 
-let updateButtonChoices = (event: any) => {
-	buttonChoices.forEach(buttonChoice => {
-		document.getElementById(buttonChoice[0]).setAttribute('value', event.target.innerHTML);// = event.target.innerHTML;
-		fetch(buttonChoice[1])
-		.then(function (response) {
-		return response.text();
-		})
-		.then(function (css) {
-			document.getElementById(buttonChoice[0]).style.cssText = css;
-		});
+// let updateButtonChoices = (event: any) => {
+// 	buttonChoices.forEach(buttonChoice => {
+// 		document.getElementById(buttonChoice[0]).setAttribute('value', event.target.innerHTML);
+// 		fetch(buttonChoice[1])
+// 		.then(function (response) {
+// 		return response.text();
+// 		})
+// 		.then(function (css) {
+// 			document.getElementById(buttonChoice[0]).style.cssText = css;
+// 		});
 		
-		document.getElementById(buttonChoice[0]).addEventListener('click', ()=>{
-			event.target.style.cssText = document.getElementById(buttonChoice[0]).style.cssText;//document.getElementById(buttonChoice).style.color;
-			closeChooser();
-		});
-	});
-}
+// 		document.getElementById(buttonChoice[0]).addEventListener('click', ()=>{
+// 			store.dispatch(updateButtonCss(document.getElementById(buttonChoice[0]).style.cssText));
+// 			updateButtonCssProperties(event);
+// 			closeChooser();
+// 		});
+// 	});
+// }
+
 
 let insertChooser = (event: any) => {
     document.getElementsByTagName('body')[0].appendChild(chooser);
 
-	updateButtonChoices(event);
+	const minimaClassName = event.target.getAttribute('minima-updated');
+	
+	let css = getStylesWithoutDefaults(event.target);
+
+	if (minimaClassName == null) {
+		event.target.classList.add("minima-updated-"+uniqueVal.toString());
+		event.target.setAttribute('minima-updated', uniqueVal);
+		defaultState.set(event.target.getAttribute('minima-updated'), css);
+		let newState: Map<string,string> = new Map();
+		let currentState = stringToMap(buttonCssSelector(store.getState()));
+		currentState.forEach((cssValue, elementId) => {
+			newState.set(elementId,cssValue);
+		});
+		newState.set(event.target.getAttribute('minima-updated'), css);
+		store.dispatch(updateButtonCss(mapToString(newState)));
+		uniqueVal+=1;
+	}
+
+	// updateButtonChoices(event);
 
     setDefaults(event);
 
@@ -207,25 +309,28 @@ let insertChooser = (event: any) => {
 
     addRealTimeUpdation(event);
 
-    document.getElementById("updateButtonClose").addEventListener('click',closeChooser);
+    document.getElementById("updateButtonClose").addEventListener('click',() => {
+		closeChooser();
+	});
 }
 
 let shiftClickListener = (event: MouseEvent) => {
     if(!event.shiftKey) { return true; }
-	// console.log(window.getComputedStyle(event.target));
 
     insertChooser(event);
 }
 
 let enable = () => {
-    Array.from(document.querySelectorAll('button')).forEach(function(button){
+    Array.from(document.getElementsByTagName('button')).forEach(function(button){
         button.addEventListener('click', shiftClickListener);
     });
+	document.getElementById("customScript").addEventListener('click', customScript);
 }
 let disable = () => {
-    Array.from(document.querySelectorAll('button')).forEach(function(button){
+    Array.from(document.getElementsByTagName('button')).forEach(function(button){
         button.removeEventListener('click', shiftClickListener);
     });
+	document.getElementById("customScript").removeEventListener('click', customScript);
 }
 
 export default {
